@@ -30,12 +30,14 @@ def create_pacient(name, birthday, phone, email, depart, chamber, starttreament,
         checkout = checkout,
     )
 
-def create_task(title,description,doctor,time) -> (Task, bool):
+def create_task(pacient,title,description,doctor,time,status) -> (Task, bool):
     return Task.objects.create(
+        pacient=Pacient.objects.filter(id=pacient).first(),
         title = title,
         description = description,
         doctor = Doctors.objects.filter(id = doctor).first(),
         time = time,
+        status = status,
 
     )
 
@@ -47,3 +49,19 @@ def read_pacients() -> Optional[Pacient]:
 
 def read_tasks() -> Optional[Task]:
     return  list(map(model_to_dict, list(Task.objects.all()) ))
+
+def read_cur(base, param, value):
+    if base == 'Doctors':
+        base = Doctors.objects.filter(param=value).first()
+        return model_to_dict(base)
+    elif base == 'Pacient':
+        Pacient.objects.filter(id=param).first()
+        base = Pacient.objects.filter(param=value).first()
+        return model_to_dict(base)
+    elif base == 'Task':
+        Task.objects.filter(id=param).first()
+        base = Task.objects.filter(param=value).first()
+        return model_to_dict(base)
+    else:
+        return {'False':'False'}
+

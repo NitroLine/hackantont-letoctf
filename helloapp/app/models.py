@@ -13,7 +13,8 @@ class Task(models.Model):
         on_delete=models.SET_NULL,
         null=True,
     )
-    time = models.DateTimeField()
+    time = models.DateTimeField(),
+    status = models.BooleanField(),
 
 
 
