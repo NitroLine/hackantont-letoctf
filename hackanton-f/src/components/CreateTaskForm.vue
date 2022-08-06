@@ -16,7 +16,7 @@
               placeholder="Описание для задачи"
           />
         </el-form-item>
-        <el-form-item label="Дата и время выполенения задачи" :label-width="formLabelWidth">
+        <el-form-item label="Дата" :label-width="formLabelWidth">
           <el-date-picker
               v-model="form.date"
               type="datetime"
@@ -46,7 +46,7 @@ export default {
   props:["patient"],
   data(){
     return {
-      formLabelWidth: "150px",
+      formLabelWidth: undefined,
       form: {
         title: "",
         description: "",
