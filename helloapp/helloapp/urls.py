@@ -20,7 +20,7 @@ from django.http import JsonResponse
 from django.urls import path
 from django.views import View
 from django.utils.decorators import method_decorator
-from helloapp.services import create_doctor , create_pacient , create_task, read_doctors, read_pacients, read_tasks
+from helloapp.services import create_doctor , create_pacient , create_task, read_doctors, read_pacients, read_tasks , read_cur
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -56,13 +56,21 @@ class task(View):
 
     def post(self, request):
         data = json.loads(request.body)
-        create_task(data["title"], data["description"], data["doctor"], data["time"])
+        create_task(data['pacient'],data["title"], data["description"], data["doctor"], data["time"],data['status'])
         resp = {"success": True}
         return JsonResponse(resp)
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class getcur(View):
+    def get(self, request):
+        data = json.loads(request.body)
+        return JsonResponse(read_cur(data["base"],data["param"],data["value"]), safe=False)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('pacient/', pacient.as_view()),
     path('doctor/', doctor.as_view()),
     path('task/', task.as_view()),
+    path('getcur/', getcur.as_view()),
 ]
