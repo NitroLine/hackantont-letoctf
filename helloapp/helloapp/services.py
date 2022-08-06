@@ -1,6 +1,6 @@
 from django.forms.models import model_to_dict
 from typing import Optional
-
+import sqlite3
 from  app.models import Doctors, Pacient, Task
 from django.core import serializers
 
@@ -51,17 +51,37 @@ def read_tasks() -> Optional[Task]:
     return  list(map(model_to_dict, list(Task.objects.all()) ))
 
 def read_cur(base, param, value):
-    if base == 'Doctors':
-        base = Doctors.objects.filter(param=value).first()
-        return model_to_dict(base)
-    elif base == 'Pacient':
-        Pacient.objects.filter(id=param).first()
-        base = Pacient.objects.filter(param=value).first()
-        return model_to_dict(base)
-    elif base == 'Task':
-        Task.objects.filter(id=param).first()
-        base = Task.objects.filter(param=value).first()
+    if base == 'Task':
+        base = Task.objects.filter(id=value).first()
         return model_to_dict(base)
     else:
         return {'False':'False'}
 
+
+def edit_cur(base, param, valueforsearch, value):
+    if base == 'Doctors':
+        sqliteConnection = sqlite3.connect('db.sqlite3')
+        cursor = sqliteConnection.cursor()
+        sql_update_query = f"Update app_doctors set {param} = {value} where {param} = {valueforsearch}"
+        cursor.execute(sql_update_query)
+        sqliteConnection.commit()
+        cursor.close()
+        return {'True':'True'}
+    elif base == 'Pacient':
+        sqliteConnection = sqlite3.connect('db.sqlite3')
+        cursor = sqliteConnection.cursor()
+        sql_update_query = f"Update app_pacient set {param} = {value} where {param} = {valueforsearch}"
+        cursor.execute(sql_update_query)
+        sqliteConnection.commit()
+        cursor.close()
+        return {'True':'True'}
+    elif base == 'Task':
+        sqliteConnection = sqlite3.connect('db.sqlite3')
+        cursor = sqliteConnection.cursor()
+        sql_update_query = f"Update app_task set {param} = {value} where {param} = {valueforsearch}"
+        cursor.execute(sql_update_query)
+        sqliteConnection.commit()
+        cursor.close()
+        return {'True':'True'}
+    else:
+        return {'False':'False'}
