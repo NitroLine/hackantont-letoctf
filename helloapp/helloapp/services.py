@@ -1,9 +1,8 @@
-import hashlib
-import hmac
+from django.forms.models import model_to_dict
 from typing import Optional
 
 from  app.models import Doctors, Pacient, Task
-
+from django.core import serializers
 
 def create_doctor(name, birthday, phone, email, depart, cab, startwork, endwork, vacation ) -> (Doctors, bool):
     return Doctors.objects.create(
@@ -40,3 +39,11 @@ def create_task(title,description,doctor,time) -> (Task, bool):
 
     )
 
+def read_doctors() -> Optional[Doctors]:
+    return  list(map(model_to_dict, list(Doctors.objects.all()) ))
+
+def read_pacients() -> Optional[Pacient]:
+    return  list(map(model_to_dict, list(Pacient.objects.all()) ))
+
+def read_tasks() -> Optional[Task]:
+    return  list(map(model_to_dict, list(Task.objects.all()) ))

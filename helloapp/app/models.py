@@ -40,3 +40,4 @@ class Pacient(models.Model):
     starttreament = models.DateTimeField()
     endtreament = models.DateTimeField()
     checkout = models.CharField(max_length=200)
+

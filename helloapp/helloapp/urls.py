@@ -20,18 +20,14 @@ from django.http import JsonResponse
 from django.urls import path
 from django.views import View
 from django.utils.decorators import method_decorator
-from helloapp.services import create_doctor , create_pacient , create_task
+from helloapp.services import create_doctor , create_pacient , create_task, read_doctors, read_pacients, read_tasks
 from django.views.decorators.csrf import csrf_exempt
 
 
 @method_decorator(csrf_exempt, name="dispatch")
 class doctor(View):
     def get(self, request):
-        person = '123'
-        resp = {"success": False, "error": "No such user or user not set phone number."}
-        if person:
-            resp = {"success": True, "person": person}
-        return JsonResponse(resp)
+        return JsonResponse(read_doctors(), safe=False)
 
     def post(self, request):
         data = json.loads(request.body)
@@ -44,11 +40,7 @@ class doctor(View):
 @method_decorator(csrf_exempt, name="dispatch")
 class pacient(View):
     def get(self, request):
-        person = '123'
-        resp = {"success": False, "error": "No such user or user not set phone number."}
-        if person:
-            resp = {"success": True, "person": person}
-        return JsonResponse(resp)
+        return JsonResponse(read_pacients(), safe=False)
 
     def post(self, request):
         data = json.loads(request.body)
@@ -60,11 +52,7 @@ class pacient(View):
 @method_decorator(csrf_exempt, name="dispatch")
 class task(View):
     def get(self, request):
-        person = '123'
-        resp = {"success": False, "error": "No such user or user not set phone number."}
-        if person:
-            resp = {"success": True, "person": person}
-        return JsonResponse(resp)
+        return JsonResponse(read_tasks(), safe=False)
 
     def post(self, request):
         data = json.loads(request.body)
