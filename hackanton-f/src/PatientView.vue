@@ -3,7 +3,9 @@
      <h2 class="center">Ваше расписание </h2>
         {{error}}
         <el-card>
-      <el-timeline>
+          <el-empty description="Пусто" v-if="tasks.length === 0"/>
+
+      <el-timeline >
         <el-timeline-item
             v-for="(task, index) in tasks"
             :key="index"
@@ -34,13 +36,17 @@ name: "PatientView",
     return {
       tasks: [],
       error: null,
+      token: null,
     }
   },
   beforeMount(){
-    this.hello().catch((err) => this.error = String(err));
+    this.token = this.$route.query.token;
+    if (this.token) {
+      this.getTasks().catch((err) => this.error = String(err));
+    }
   },
   methods:{
-    async hello(){
+    async getTasks(){
       // await fetch("https://04.letoctf.cbap.ru/api/public/solution/Tasks", {
       //   headers: {
       //     'Accept': 'application/json'
@@ -56,6 +62,7 @@ name: "PatientView",
       ];
       this.tasks = result.map(this.prepeareTask)
     },
+
     prepeareTask(task){
       task.size = 'large';
       if (task.done){

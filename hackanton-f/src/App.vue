@@ -2,8 +2,7 @@
   <div class="common-layout">
     <el-container>
       <el-header class="row">
-        <img class="logo" alt="Vue logo" src="./assets/logo.png">
-        <h2>SQLAB</h2>
+        <img class="logo" alt="Vue logo" src="./assets/11BEST.png">
       </el-header>
       <el-main>
         <router-view>
@@ -19,6 +18,7 @@
 
 export default {
   name: 'App',
+
 }
 </script>
 
@@ -28,13 +28,13 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 10px;
 }
 .center{
   text-align:center;
 }
 .logo{
-  max-width: 50px;
+  max-width: 200px;
 }
 .row{
   display: flex;

@@ -9,7 +9,6 @@ export default createRouter({
             path:'/doctor',
             name: 'Doctor',
             component: DoctorView,
-            children: [],
         },
         {
             path: '/',
