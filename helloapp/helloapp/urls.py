@@ -20,7 +20,7 @@ from django.http import JsonResponse
 from django.urls import path
 from django.views import View
 from django.utils.decorators import method_decorator
-from helloapp.services import create_doctor , create_pacient , create_task, read_doctors, read_pacients, read_tasks , read_cur
+from helloapp.services import create_doctor , create_pacient , create_task, read_doctors, read_pacients, read_tasks , read_cur, edit_cur
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -62,15 +62,23 @@ class task(View):
 
 
 @method_decorator(csrf_exempt, name="dispatch")
-class getcur(View):
+class get_cur(View):
     def get(self, request):
         data = json.loads(request.body)
-        return JsonResponse(read_cur(data["base"],data["param"],data["value"]), safe=False)
+        return JsonResponse(read_cur(data["base"],data["value"]), safe=False)
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class set_cur(View):
+    def post(self, request):
+        data = json.loads(request.body)
+        return JsonResponse(edit_cur(data["base"],data["param"],data["valueforsearch"],data["value"]), safe=False)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('pacient/', pacient.as_view()),
     path('doctor/', doctor.as_view()),
     path('task/', task.as_view()),
-    path('getcur/', getcur.as_view()),
+    path('get_cur/', get_cur.as_view()),
+    path('set_cur/', set_cur.as_view()),
 ]
