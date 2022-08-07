@@ -11,7 +11,7 @@ export default createRouter({
             component: DoctorView,
         },
         {
-            path: '/',
+            path: '/patient',
             name: 'Patient',
             component: PatientView,
         },

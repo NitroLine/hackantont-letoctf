@@ -9,14 +9,14 @@
                 v-for="item in patients"
 
                 :key="item.id"
-                :label="item.fio"
+                :label="item.name"
                 :value="item.id"
             />
           </el-select>
     </p>
     <hr/>
     <CreateTaskForm :patient="selectedPatientId"/>
-    <TasksList/>
+    <TasksList :patient="selectedPatientId"/>
   </div>
 </template>
 
@@ -32,6 +32,7 @@ export default {
       patients: [],
       selectedPatientId: "",
       error: null,
+      doctorId: null,
     }
   },
   beforeMount(){
@@ -39,7 +40,8 @@ export default {
   },
   methods:{
     async getPatients(){
-      return [{id: 2, fio: "ЗУБИНКО МИХАИЛ ПЕТРОВИЧ"}, {id:3, fio: "AНТОН АНТОНОВИЧ ПАЛКА"}]
+      let resp = await fetch('/pacient/');
+      return await resp.json();
     }
   }
 }

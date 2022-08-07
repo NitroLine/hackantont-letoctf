@@ -2,7 +2,7 @@
   <div class="common-layout">
     <el-container>
       <el-header class="row">
-        <img class="logo" alt="Vue logo" src="./assets/11BEST.png">
+        <img class="logo" alt="logo" src="/static/img/11BEST.png">
       </el-header>
       <el-main>
         <router-view>

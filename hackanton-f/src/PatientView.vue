@@ -14,10 +14,10 @@
             :color="task.color"
             :size="task.size"
             :hollow="task.hollow"
-            :timestamp="task.date"
+            :timestamp="task.time"
         >
 
-            <h4>{{task.name}}</h4>
+            <h4>{{task.title}}</h4>
             <p>{{task.description}}</p>
             <p>{{task.doctor}}</p>
         </el-timeline-item>
@@ -47,24 +47,25 @@ name: "PatientView",
   },
   methods:{
     async getTasks(){
-      // await fetch("https://04.letoctf.cbap.ru/api/public/solution/Tasks", {
-      //   headers: {
-      //     'Accept': 'application/json'
-      //   }
-      // });
-      // if (!resp.ok){
-      //   throw Error(resp.statusText)
-      // }
-      //let result = await resp.json()
-      let result = [
-        {name: 'Выпить таблетки', date: '12:22 12 сентября', description: "3 грамма для деда", done: true},
-        {name: 'Выпить таблетки', date: '13:22 12 сентября ', description: "грамма для деда"}
-      ];
+      let resp = await fetch(`/tasks/${this.token}`,{
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      if (!resp.ok){
+        throw Error(resp.statusText)
+      }
+      let result = await resp.json()
+      // let result = [
+      //   {name: 'Выпить таблетки', date: '12:22 12 сентября', description: "3 грамма для деда", done: true},
+      //   {name: 'Выпить таблетки', date: '13:22 12 сентября ', description: "грамма для деда"}
+      // ];
       this.tasks = result.map(this.prepeareTask)
     },
 
     prepeareTask(task){
       task.size = 'large';
+      task.done = task.status;
       if (task.done){
         task.color = '#0bbd87';
         task.icon = Check;

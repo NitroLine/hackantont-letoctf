@@ -47,6 +47,9 @@ def read_doctors() -> Optional[Doctors]:
 def read_pacients() -> Optional[Pacient]:
     return  list(map(model_to_dict, list(Pacient.objects.all()) ))
 
+def read_tasks_by_patient(id) -> Optional[Pacient]:
+    return  list(map(model_to_dict, list(Task.objects.filter(pacient__id=id))))
+
 def read_tasks() -> Optional[Task]:
     return  list(map(model_to_dict, list(Task.objects.all()) ))
 
@@ -58,7 +61,7 @@ def read_cur(base, param, value):
         return {'False':'False'}
 
 
-def edit_cur(base, param, valueforsearch, value):
+def edit_cur(base, param, valueforsearch, value, filterparam):
     if base == 'Doctors':
         sqliteConnection = sqlite3.connect('db.sqlite3')
         cursor = sqliteConnection.cursor()
@@ -78,7 +81,7 @@ def edit_cur(base, param, valueforsearch, value):
     elif base == 'Task':
         sqliteConnection = sqlite3.connect('db.sqlite3')
         cursor = sqliteConnection.cursor()
-        sql_update_query = f"Update app_task set {param} = {value} where {param} = {valueforsearch}"
+        sql_update_query = f"Update app_task set {param} = {value} where {filterparam} = {valueforsearch}"
         cursor.execute(sql_update_query)
         sqliteConnection.commit()
         cursor.close()

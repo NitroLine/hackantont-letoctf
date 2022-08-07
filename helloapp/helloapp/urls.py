@@ -20,9 +20,10 @@ from django.http import JsonResponse
 from django.urls import path
 from django.views import View
 from django.utils.decorators import method_decorator
-from helloapp.services import create_doctor , create_pacient , create_task, read_doctors, read_pacients, read_tasks , read_cur, edit_cur
+from helloapp.services import create_doctor , create_pacient , create_task, read_doctors, read_pacients, read_tasks , read_cur, edit_cur, read_tasks_by_patient
+from app.urls import urls
 from django.views.decorators.csrf import csrf_exempt
-
+from django.shortcuts import render
 
 @method_decorator(csrf_exempt, name="dispatch")
 class doctor(View):
@@ -62,6 +63,11 @@ class task(View):
 
 
 @method_decorator(csrf_exempt, name="dispatch")
+class TasksFilter(View):
+    def get(self, request, id):
+        return JsonResponse(read_tasks_by_patient(id), safe=False)
+
+@method_decorator(csrf_exempt, name="dispatch")
 class get_cur(View):
     def get(self, request):
         data = json.loads(request.body)
@@ -72,7 +78,9 @@ class get_cur(View):
 class set_cur(View):
     def post(self, request):
         data = json.loads(request.body)
-        return JsonResponse(edit_cur(data["base"],data["param"],data["valueforsearch"],data["value"]), safe=False)
+        return JsonResponse(edit_cur(data["base"],data["param"],data["valueforsearch"],data["value"], data['filterparam']), safe=False)
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -81,4 +89,6 @@ urlpatterns = [
     path('task/', task.as_view()),
     path('get_cur/', get_cur.as_view()),
     path('set_cur/', set_cur.as_view()),
+    path('tasks/<int:id>/', TasksFilter.as_view())
 ]
+urlpatterns += urls

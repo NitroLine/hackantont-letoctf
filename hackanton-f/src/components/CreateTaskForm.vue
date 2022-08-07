@@ -58,7 +58,22 @@ export default {
   methods: {
     createTask(){
       // req here
-
+      const body = {
+        "title": this.form.title,
+        "time": this.form.time,
+        "description": this.form.description,
+        "doctor": this.$route.query.id,
+        "pacient": this.patient,
+        "status": false,
+      }
+      fetch('/task/', {
+        body: JSON.stringify(body),
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
       console.log(this.form.title, this.form.date)
       this.modal = false;
       this.form.title = ""
